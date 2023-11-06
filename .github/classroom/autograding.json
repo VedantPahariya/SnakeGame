@@ -1,0 +1,64 @@
+{
+  "tests": [
+    {
+      "name": "make run-unit-tests-1",
+      "setup": "",
+      "run": "make run-unit-tests-1",
+      "input": "",
+      "output": "",
+      "comparison": "exact",
+      "timeout": 1,
+      "points": 1
+    },
+    {
+      "name": "make run-unit-tests-3",
+      "setup": "",
+      "run": "make run-unit-tests-3",
+      "input": "",
+      "output": "",
+      "comparison": "exact",
+      "timeout": 1,
+      "points": 1
+    },
+    {
+      "name": "make run-unit-tests-4",
+      "setup": "",
+      "run": "make run-unit-tests-4",
+      "input": "",
+      "output": "",
+      "comparison": "exact",
+      "timeout": 1,
+      "points": 1
+    },
+    {
+      "name": "make run-unit-tests-5",
+      "setup": "",
+      "run": "make run-unit-tests-5",
+      "input": "",
+      "output": "",
+      "comparison": "exact",
+      "timeout": 1,
+      "points": 1
+    },
+    {
+      "name": "make run-unit-tests-6",
+      "setup": "",
+      "run": "make run-unit-tests-6",
+      "input": "",
+      "output": "",
+      "comparison": "exact",
+      "timeout": 1,
+      "points": 1
+    },
+    {
+      "name": "make run-integration-tests",
+      "setup": "",
+      "run": "make run-integration-tests",
+      "input": "",
+      "output": "",
+      "comparison": "exact",
+      "timeout": 1,
+      "points": 5
+    }
+  ]
+}
