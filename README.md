@@ -1,3 +1,4 @@
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/v3VARkQe)
 # Snake Game
 
 In this project, you'll get some practice with C coding by creating a playable snake game. If you're not familiar with snake, [you can try out a demo at this link](https://www.xarg.org/project/html5-snake/). Please follow directions bellow:
