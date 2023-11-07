@@ -23,8 +23,47 @@ static void update_head(game_state_t* state, unsigned int snum);
 
 /* Task 1 */
 game_state_t* create_default_state() {
-  // TODO: Implement this function.
-  return NULL;
+  game_state_t* D= (game_state_t*)malloc(sizeof(game_state_t));
+     D->num_rows = 18;
+  char** brd = (char**) malloc(sizeof(char*)*18);
+    for (int i = 0; i < 18; i++) {
+        brd[i] = (char*)malloc(21 * sizeof(char));
+    }
+    for(int i=0;i<18;i++){
+      for(int j=0;j<21;j++){
+        if(i==0 || j==0 || i==17 || j==19){
+          brd[i][j] ='#';
+        }
+        else if ( i == 2 && j == 9 ) {
+          brd[i][j] ='*';
+        }
+       else if ( i == 2 && j == 2) {
+           brd[i][j] ='d';
+      } else if (i == 2 && j == 3) {
+           brd[i][j] ='>';
+      } else if (i == 2 && j == 4) {
+           brd[i][j] ='D';
+      } else {
+           brd[i][j] =' ';
+      }
+    }
+      brd[i][20]='\0';
+      }
+   D->board = brd;
+   D-> num_snakes = 1;
+     // snake_t snk[(D->num_snakes)];
+     // snake_t snk[1];
+      snake_t* B = (snake_t*) malloc(sizeof(snake_t));
+      B->tail_row = 2;
+      B->tail_col = 2;
+      B->head_col = 4;
+      B->head_row = 2;
+      B->live = true;
+      //snk[0]= *B;
+      // snake_t* snk = D->snakes;
+      D->snakes = B ;
+      //  D->snakes = NULL;
+  return D;
 }
 
 /* Task 2 */
