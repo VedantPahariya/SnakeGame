@@ -47,7 +47,7 @@ game_state_t* create_default_state() {
            brd[i][j] =' ';
       }
     }
-      brd[i][20]='\0';
+      brd[i][20]='\n';
       }
    D->board = brd;
    D-> num_snakes = 1;
@@ -68,16 +68,58 @@ game_state_t* create_default_state() {
 
 /* Task 2 */
 void free_state(game_state_t* state) {
-  // TODO: Implement this function.
+  char **arr = state->board;
+  for (int i = 0; i < 18; i++) {
+      free(arr[i]);
+  }
+  free(arr);
+  state->snakes = NULL;
+  free(state);
   return;
 }
 
 /* Task 3 */
 void print_board(game_state_t* state, FILE* fp) {
-  // TODO: Implement this function.
-  return;
-}
+    if (fp == NULL) {
+        printf("Error opening file\n");
+        exit(1);
+    }
+    char **arr = state->board;
+    for (int i = 0; i < 17; i++) {
+  //for (int j = 0; j < 20; j++) {
+            fputs(arr[i], fp);
+      //  }
+    //  printf("%s",arr[i]);
+    }
+        //fputs("\n", fp);
+       fputs( arr[17],fp);
+      // printf("%s",arr[17]);
+   //    fprintf( fp, "\n");
+// fprintf( fp, "%s",arr[i] );
+     fclose(fp);
+ return;
+    }
 
+// void print_board(game_state_t* state, FILE* fp) {
+//     if (fp == NULL) {
+//         printf("Error opening file\n");
+//         return;
+//     }
+
+//     char **arr = state->board;
+//     for (int i = 0; i < 18; i++) {
+//         fputs(arr[i], fp);
+//         if (i < 17) { // Don't add a newline character after the last row
+//             fputc('\n', fp);
+//         }
+//         // fputc('\n', fp);
+//     }
+//      int lastRowLength = strlen(arr[17]);
+//     if (arr[17][lastRowLength - 1] != '\n') {
+//         fputc('\n', fp);
+//     }
+//     //fputc('\n', fp);
+// }
 /*
   Saves the current state into filename. Does not modify the state object.
   (already implemented for you).
@@ -112,8 +154,10 @@ static void set_board_at(game_state_t* state, unsigned int row, unsigned int col
   Returns false otherwise.
 */
 static bool is_tail(char c) {
-  // TODO: Implement this function.
-  return true;
+  if(c=='w' || c=='a'|| c=='s' || c=='d'){
+    return true;
+  }
+  return false;
 }
 
 /*
@@ -122,8 +166,10 @@ static bool is_tail(char c) {
   Returns false otherwise.
 */
 static bool is_head(char c) {
-  // TODO: Implement this function.
-  return true;
+   if(c=='W' || c=='A'|| c=='S' || c=='D' || c=='x'){
+    return true;
+  }
+  return false;
 }
 
 /*
@@ -131,8 +177,10 @@ static bool is_head(char c) {
   The snake consists of these characters: "wasd^<v>WASDx"
 */
 static bool is_snake(char c) {
-  // TODO: Implement this function.
-  return true;
+   if(is_head(c) || is_tail(c) || c=='^' || c=='<'|| c=='v' || c=='>'){
+    return true;
+  }
+  return false;
 }
 
 /*
@@ -141,8 +189,23 @@ static bool is_snake(char c) {
   tail ("wasd").
 */
 static char body_to_tail(char c) {
-  // TODO: Implement this function.
-  return '?';
+ if(c=='^'){
+    c = 'w';
+    return c;
+  }
+  else if(c=='<'){
+    c = 'a';
+    return c;
+  }
+  else if(c=='v'){
+    c = 's';
+    return c;
+  }
+  else if(c=='>'){
+    c = 'd';
+    return c;
+  }
+  else return '?';
 }
 
 /*
@@ -151,8 +214,23 @@ static char body_to_tail(char c) {
   body ("^<v>").
 */
 static char head_to_body(char c) {
-  // TODO: Implement this function.
-  return '?';
+  if(c=='W'){
+    c = '^';
+    return c;
+  }
+  else if(c=='A'){
+    c = '<';
+    return c;
+  }
+  else if(c=='S'){
+    c = 'v';
+    return c;
+  }
+  else if(c=='D'){
+    c = '>';
+    return c;
+  }
+  else return '?';
 }
 
 /*
@@ -161,7 +239,12 @@ static char head_to_body(char c) {
   Returns cur_row otherwise.
 */
 static unsigned int get_next_row(unsigned int cur_row, char c) {
-  // TODO: Implement this function.
+  if(c=='v' || c=='s'|| c=='S'){
+    return cur_row+1;
+  }
+  else if(c=='^' || c=='w'|| c=='W'){
+    return cur_row-1;
+  }
   return cur_row;
 }
 
@@ -171,7 +254,12 @@ static unsigned int get_next_row(unsigned int cur_row, char c) {
   Returns cur_col otherwise.
 */
 static unsigned int get_next_col(unsigned int cur_col, char c) {
-  // TODO: Implement this function.
+  if(c=='>' || c=='d'|| c=='D'){
+    return cur_col+1;
+  }
+  else if(c=='<' || c=='a'|| c=='A'){
+    return cur_col-1;
+  }
   return cur_col;
 }
 
