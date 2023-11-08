@@ -27,7 +27,7 @@ game_state_t* create_default_state() {
      D->num_rows = 18;
   char** brd = (char**) malloc(sizeof(char*)*18);
     for (int i = 0; i < 18; i++) {
-        brd[i] = (char*)malloc(21 * sizeof(char));
+        brd[i] = (char*)malloc(25 * sizeof(char));
     }
     for(int i=0;i<18;i++){
       for(int j=0;j<21;j++){
@@ -47,7 +47,7 @@ game_state_t* create_default_state() {
            brd[i][j] =' ';
       }
     }
-      brd[i][20]='\n';
+      brd[i][20]='\0';
       }
    D->board = brd;
    D-> num_snakes = 1;
@@ -70,10 +70,15 @@ game_state_t* create_default_state() {
 void free_state(game_state_t* state) {
   char **arr = state->board;
   for (int i = 0; i < 18; i++) {
-      free(arr[i]);
-  }
+    free(arr[i]);
+    }
+  // for (int i = 0; i < 18; i++) {
+  //    for(int j=0;j<25;j++){
+  //      free(arr[i][j]);
+  //    } 
+  
   free(arr);
-  state->snakes = NULL;
+  free(state->snakes);
   free(state);
   return;
 }
@@ -85,18 +90,22 @@ void print_board(game_state_t* state, FILE* fp) {
         exit(1);
     }
     char **arr = state->board;
-    for (int i = 0; i < 17; i++) {
+    for (int i = 0; i < 18; i++) {
   //for (int j = 0; j < 20; j++) {
             fputs(arr[i], fp);
       //  }
-    //  printf("%s",arr[i]);
+     // printf("%s",arr[i]);
+     //if(i!=17){
+       // fputc('\n', fp);
+    // }
+     fputs("\n", fp);
     }
         //fputs("\n", fp);
-       fputs( arr[17],fp);
+       //fputs( arr[17],fp);
       // printf("%s",arr[17]);
    //    fprintf( fp, "\n");
 // fprintf( fp, "%s",arr[i] );
-     fclose(fp);
+   //  close(fp);
  return;
     }
 
@@ -271,7 +280,27 @@ static unsigned int get_next_col(unsigned int cur_col, char c) {
   This function should not modify anything.
 */
 static char next_square(game_state_t* state, unsigned int snum) {
-  // TODO: Implement this function.
+ snake_t snk = state->snakes[snum];
+ int x= snk.head_row;
+ int y= snk.head_col;
+ char prst = state->board[x][y] ;
+ char fut;
+  if(prst=='D'){
+    fut = state->board[x][y+1];
+    return fut;
+  }
+  if(prst=='W'){
+    fut = state->board[x-1][y];
+    return fut;
+  }
+  if(prst=='A'){
+    fut = state->board[x][y-1];
+    return fut;
+  }
+  if(prst=='S'){
+    fut = state->board[x+1][y];
+    return fut;
+  }
   return '?';
 }
 
