@@ -316,8 +316,39 @@ static char next_square(game_state_t* state, unsigned int snum) {
   Note that this function ignores food, walls, and snake bodies when moving the head.
 */
 static void update_head(game_state_t* state, unsigned int snum) {
-  // TODO: Implement this function.
-  return;
+  snake_t* snk = state->snakes;
+  char **arr = state->board;
+ int x= snk->head_row;
+ int y= snk->head_col;
+ char prst = state->board[x][y];
+ if(prst=='D'){
+    arr[x][y] = '>';
+    snk->head_row = x;
+    snk->head_col = y+1;
+    y= y+1;
+    arr[x][y] = 'D';
+  }
+  else if(prst=='W'){
+    arr[x][y] = '^';
+    snk->head_row = x-1;
+    snk->head_col = y;
+    x= x-1;
+    arr[x][y] = 'W';
+  }
+  else if(prst=='A'){
+    arr[x][y] = '<';
+    snk->head_row = x;
+    snk->head_col = y-1; 
+    y= y-1;
+    arr[x][y]='A';
+  }
+  else if(prst=='S'){
+    arr[x][y] = 'v';
+    snk->head_row = x+1;
+    snk->head_col = y; 
+    x= x+1;
+    arr[x][y]='S';
+  }
 }
 
 /*
@@ -331,14 +362,67 @@ static void update_head(game_state_t* state, unsigned int snum) {
   ...in the snake struct: update the row and col of the tail
 */
 static void update_tail(game_state_t* state, unsigned int snum) {
-  // TODO: Implement this function.
-  return;
+ snake_t* snk = state->snakes;
+  char **arr = state->board;
+ int x= snk->tail_row;
+ int y= snk->tail_col;
+ char prst = state->board[x][y];
+ if(prst=='d'){
+    arr[x][y] = ' ';
+    snk->tail_row = x;
+    snk->tail_col = y+1;
+    y= y+1;
+  }
+  else if(prst=='w'){
+    arr[x][y] = ' ';
+    snk->tail_row = x-1;
+    snk->tail_col = y;
+    x= x-1;
+  }
+  else if(prst=='a'){
+    arr[x][y] = ' ';
+    snk->tail_row = x;
+    snk->tail_col = y-1; 
+    y= y-1;
+  }
+  else if(prst=='s'){
+    arr[x][y] = ' ';
+    snk->tail_row = x+1;
+    snk->tail_col = y; 
+    x= x+1;
+  }
+  if(arr[x][y]=='<'){
+    arr[x][y] = 'a';
+  }
+  else if(arr[x][y]=='^'){
+    arr[x][y] = 'w';
+  }
+  else if(arr[x][y]=='v'){
+    arr[x][y] = 's';
+  }
+  else if(arr[x][y]=='>'){
+    arr[x][y] = 'd';
+  }
 }
 
 /* Task 4.5 */
 void update_state(game_state_t* state, int (*add_food)(game_state_t* state)) {
-  // TODO: Implement this function.
-  return;
+   snake_t* snk = state->snakes;
+    int x= snk->head_row ;
+    int y= snk->head_col ;
+  char fut = next_square(state,0);
+  if(fut==' '){
+    update_head(state,0);
+    update_tail(state,0); 
+  }
+  else if(fut=='*'){
+    update_head(state,0);
+    add_food(state);
+  }
+  else if(fut=='#' || is_snake(fut)){
+    state->snakes[0].live = false;
+    state->board[x][y] = 'x';
+  }
 }
 
 /* Task 5 */
