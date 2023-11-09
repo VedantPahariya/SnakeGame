@@ -90,45 +90,15 @@ void print_board(game_state_t* state, FILE* fp) {
         exit(1);
     }
     char **arr = state->board;
-    for (int i = 0; i < 18; i++) {
-  //for (int j = 0; j < 20; j++) {
-            fputs(arr[i], fp);
-      //  }
-     // printf("%s",arr[i]);
-     //if(i!=17){
-       // fputc('\n', fp);
-    // }
+    for (int i = 0; i < state->num_rows; i++) {
+    for (int j = 0; j < 20; j++) {
+            fputc(arr[i][j], fp);
+        }
      fputs("\n", fp);
     }
-        //fputs("\n", fp);
-       //fputs( arr[17],fp);
-      // printf("%s",arr[17]);
-   //    fprintf( fp, "\n");
-// fprintf( fp, "%s",arr[i] );
-   //  close(fp);
- return;
+    return;
     }
 
-// void print_board(game_state_t* state, FILE* fp) {
-//     if (fp == NULL) {
-//         printf("Error opening file\n");
-//         return;
-//     }
-
-//     char **arr = state->board;
-//     for (int i = 0; i < 18; i++) {
-//         fputs(arr[i], fp);
-//         if (i < 17) { // Don't add a newline character after the last row
-//             fputc('\n', fp);
-//         }
-//         // fputc('\n', fp);
-//     }
-//      int lastRowLength = strlen(arr[17]);
-//     if (arr[17][lastRowLength - 1] != '\n') {
-//         fputc('\n', fp);
-//     }
-//     //fputc('\n', fp);
-// }
 /*
   Saves the current state into filename. Does not modify the state object.
   (already implemented for you).
