@@ -47,7 +47,8 @@ game_state_t* create_default_state() {
            brd[i][j] =' ';
       }
     }
-      brd[i][20]='\0';
+      brd[i][20]='\n';
+      brd[i][21]='\0';
       }
    D->board = brd;
    D-> num_snakes = 1;
@@ -92,12 +93,40 @@ void print_board(game_state_t* state, FILE* fp) {
     char **arr = state->board;
     for (int i = 0; i < state->num_rows; i++) {
     for (int j = 0; j < 20; j++) {
-            fputc(arr[i][j], fp);
+      if(arr[i][j]=='\n'){
+        break;
+      }
+      fputc(arr[i][j], fp);
         }
      fputs("\n", fp);
     }
     return;
     }
+    
+/*void print_board(game_state_t* state, FILE* fp) {
+if (fp == NULL) {
+    printf("Error opening file\n");
+    exit(1);
+}
+    int row = state->num_rows;
+    char **brd = state->board;
+    char ch;
+    int i=0;
+    int j=0;
+    do{
+        ch = brd[i][j];
+        fputc(ch,fp);
+        printf("%c", ch);
+         if(ch == '\n' ){
+            i++; 
+              j=0;
+            }
+        else {
+           j++;
+            }
+      } while(i<row);
+    return;
+}*/
 
 /*
   Saves the current state into filename. Does not modify the state object.
@@ -398,7 +427,34 @@ void update_state(game_state_t* state, int (*add_food)(game_state_t* state)) {
 /* Task 5 */
 game_state_t* load_board(FILE* fp) {
   // TODO: Implement this function.
-  return NULL;
+  game_state_t* D= (game_state_t*)malloc(sizeof(game_state_t));
+  char ch;
+  char** brd = (char**) malloc(sizeof(char*)*18);
+    for (int i = 0; i < 18; i++) {
+        brd[i] = (char*)malloc(25 * sizeof(char));
+    }
+    int i=0;
+    int j=0;
+    do{
+      ch = fgetc(fp);
+      if(ch!=EOF){
+      brd[i][j]=ch;
+     // printf("%c",ch );
+      }
+      if(ch == '\n' ){
+      brd[i] = (char*)realloc( brd[i], (j+1) * sizeof(char));
+      i++; 
+      j=0;
+      }
+      else {
+        j++;
+      }
+    } while(ch!=EOF);
+   D->board= brd;
+   D->num_rows = i;  
+   D->num_snakes =0;
+   D->snakes = NULL;
+  return D;
 }
 
 /*
