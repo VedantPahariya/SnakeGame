@@ -467,7 +467,18 @@ game_state_t* load_board(FILE* fp) {
 */
 static void find_head(game_state_t* state, unsigned int snum) {
   // TODO: Implement this function.
-  return;
+  char **arr= state->board;
+  int i= state->snakes[snum].tail_row;
+  int j= state->snakes[snum].tail_col;
+  char ch= arr[i][j];
+
+  while(!(is_head(ch))){
+    i= get_next_row(i,ch);
+    j= get_next_col(j,ch);
+    ch=arr[i][j];
+  }
+   state->snakes[snum].head_row = i;
+   state->snakes[snum].head_col = j;
 }
 
 /* Task 6.2 */
