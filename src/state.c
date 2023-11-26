@@ -498,49 +498,52 @@ void update_state(game_state_t *state, int (*add_food)(game_state_t *state))
 /* Task 5 */
 game_state_t *load_board(FILE *fp)
 {
-  // TODO: Implement this function.
   if (fp == NULL)
   {
     return NULL;
   }
-  game_state_t *D = (game_state_t *)malloc(sizeof(game_state_t));
-  char ch;
-  // printf("hello\n");
-  char **brd = (char **)malloc(sizeof(char *) * 100002);
-  for (int i = 0; i < 100002; i++)
+
+  game_state_t *D = (game_state_t *)calloc(1, sizeof(game_state_t));
+  if (D == NULL)
   {
-    brd[i] = (char *)malloc(100002 * sizeof(char));
+    return NULL;
   }
-  // printf("heldgdfgsgsglo\n");
+
+  char ch;
   unsigned int i = 0;
   unsigned int j = 0;
+
+  char **brd = (char **)calloc(1, sizeof(char *));
+  brd[0] = (char *)calloc(1, sizeof(char));
+
   do
   {
     ch = (char)fgetc(fp);
-    if (ch != EOF)
-    {
-      brd[i][j] = ch;
-      // printf("%c",ch );
-    }
+
+    brd[i][j] = ch;
+
     if (ch == '\n')
     {
-      brd[i] = (char *)realloc(brd[i], (j + 1) * sizeof(char));
-      // printf("hellolllgdsd\n\n\n");
       i++;
       j = 0;
+      brd = (char **)realloc(brd, (i + 1) * sizeof(char *));
+      brd[i] = (char *)calloc(1, sizeof(char));  // Allocate memory for the new row
     }
     else
     {
       j++;
+      brd[i] = (char *)realloc(brd[i], (j + 1) * sizeof(char));
     }
   } while (ch != EOF);
-  //   printf("hello\n");
+
   D->board = brd;
   D->num_rows = i;
   D->num_snakes = 0;
   D->snakes = NULL;
+
   return D;
 }
+
 
 /*
   Task 6.1
