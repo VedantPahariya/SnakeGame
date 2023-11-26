@@ -92,7 +92,7 @@ void print_board(game_state_t* state, FILE* fp) {
     }
     char **arr = state->board;
     for (int i = 0; i < state->num_rows; i++) {
-    for (int j = 0; j < 20; j++) {
+    for (int j = 0; j < 100000; j++) {
       if(arr[i][j]=='\n'){
         break;
       }
@@ -317,8 +317,8 @@ static char next_square(game_state_t* state, unsigned int snum) {
 static void update_head(game_state_t* state, unsigned int snum) {
   snake_t* snk = state->snakes;
   char **arr = state->board;
- unsigned int x= snk->head_row;
- unsigned int y= snk->head_col;
+ unsigned int x= snk[snum].head_row;
+ unsigned int y= snk[snum].head_col;
  char prst = state->board[x][y];
  if(prst=='D'){
     arr[x][y] = '>';
@@ -363,8 +363,8 @@ static void update_head(game_state_t* state, unsigned int snum) {
 static void update_tail(game_state_t* state, unsigned int snum) {
  snake_t* snk = state->snakes;
   char **arr = state->board;
- unsigned int x= snk->tail_row;
- unsigned int y= snk->tail_col;
+ unsigned int x= snk[snum].tail_row;
+ unsigned int y= snk[snum].tail_col;
  char prst = state->board[x][y];
  if(prst=='d'){
     arr[x][y] = ' ';
@@ -406,22 +406,27 @@ static void update_tail(game_state_t* state, unsigned int snum) {
 
 /* Task 4.5 */
 void update_state(game_state_t* state, int (*add_food)(game_state_t* state)) {
-   snake_t* snk = state->snakes;
-    unsigned int x= snk->head_row ;
-    unsigned int y= snk->head_col ;
-  char fut = next_square(state,0);
+    snake_t* snk = state->snakes;
+    unsigned int ns = state->num_snakes;
+    unsigned int i;
+     for(i=0; i<ns; i++){
+    unsigned int x= snk[i].head_row ;
+    unsigned int y= snk[i].head_col ;
+   char fut = next_square(state,i);
+  
   if(fut==' '){
-    update_head(state,0);
-    update_tail(state,0); 
+    update_head(state,i);
+    update_tail(state,i); 
   }
   else if(fut=='*'){
-    update_head(state,0);
+    update_head(state,i);
     add_food(state);
   }
   else if(fut=='#' || is_snake(fut)){
-    state->snakes[0].live = false;
+    state->snakes[i].live = false;
     state->board[x][y] = 'x';
   }
+     }
 }
 
 /* Task 5 */
@@ -429,10 +434,12 @@ game_state_t* load_board(FILE* fp) {
   // TODO: Implement this function.
   game_state_t* D= (game_state_t*)malloc(sizeof(game_state_t));
   char ch;
-  char** brd = (char**) malloc(sizeof(char*)*18);
-    for (int i = 0; i < 18; i++) {
-        brd[i] = (char*)malloc(25 * sizeof(char));
+ // printf("hello\n");
+  char** brd = (char**) malloc(sizeof(char*)*100002);
+    for (int i = 0; i < 100002; i++) {
+        brd[i] = (char*)malloc(100002 * sizeof(char));
     }
+   // printf("heldgdfgsgsglo\n");
     unsigned int i=0;
     unsigned int j=0;
     do{
@@ -443,6 +450,7 @@ game_state_t* load_board(FILE* fp) {
       }
       if(ch == '\n' ){
       brd[i] = (char*)realloc( brd[i], (j+1) * sizeof(char));
+     // printf("hellolllgdsd\n\n\n");
       i++; 
       j=0;
       }
@@ -450,6 +458,7 @@ game_state_t* load_board(FILE* fp) {
         j++;
       }
     } while(ch!=EOF);
+ //   printf("hello\n");
    D->board= brd;
    D->num_rows = i;  
    D->num_snakes =0;
@@ -471,7 +480,6 @@ static void find_head(game_state_t* state, unsigned int snum) {
  unsigned int i= state->snakes[snum].tail_row;
  unsigned int j= state->snakes[snum].tail_col;
   char ch= arr[i][j];
-
   while(!(is_head(ch))){
     i= get_next_row(i,ch);
     j= get_next_col(j,ch);
@@ -490,16 +498,32 @@ game_state_t* initialize_snakes(game_state_t* state) {
   unsigned int i =1;
   unsigned int j =1;
   char ch;
+  unsigned int cnt=0;
   state->num_snakes=0;
+  while(i <=(ro-2)){          // to count the no. of snakes
+    ch= arr[i][j];
+    if(is_tail(ch)){
+      cnt++;
+      j++;
+    }
+    else if(ch=='#'){
+      i++;
+      j=1;
+   }
+    else j++;
+  } 
+  i=1;
+  j=1;
+  snake_t* B = (snake_t*) malloc( cnt * sizeof(snake_t));
  while(i <=(ro-2)){
    ch= arr[i][j];
+  // printf("%c\n", ch);
    if(is_tail(ch)){
-      snake_t* B = (snake_t*) malloc(sizeof(snake_t));
       unsigned int n= (state->num_snakes)++;
-      B->tail_row=i;
-      B->tail_col=j;
-      B->live= true;
-      state->snakes = B;
+      B[n].tail_row=i;
+      B[n].tail_col=j;
+      B[n].live= true;
+       state->snakes = B; 
       find_head(state, n);
        j++;
     }
