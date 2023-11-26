@@ -45,16 +45,16 @@ int main(int argc, char* argv[]) {
   
   if (in_filename != NULL) {
     // TODO: Load the board from in_filename
-    FILE* fp = fopen(in_filename, "r");
+    FILE* fp = fopen(in_filename,"r");
   //  printf("hellolllgdsd\n\n\n");
-    state = load_board(fp);
-    fclose(fp);
+    state = load_board(fp); 
     // TODO: If the file doesn't exist, return -1
     if(state == NULL){
       return -1;
+    
     }
     // TODO: Then call initialize_snakes on the state you made
-    state = initialize_snakes(state);
+    initialize_snakes(state);
     // printf("hellolllgdsd\n\n\n");
     //  if(state==NULL){
     //   printf("YES\n");
@@ -62,6 +62,7 @@ int main(int argc, char* argv[]) {
     //  if(state->snakes==NULL){
     //   printf(" DEFINETJFjs YES\n");
     // }
+    fclose(fp);
   } else if (io_stdin) {
     // TODO: Load the board from stdin
      state = load_board(stdin);
