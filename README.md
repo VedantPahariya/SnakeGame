@@ -56,3 +56,17 @@ not be required to change it unless you are doing something very advanced. The f
 Following are some generally useful links for programmers: 
 - [https://missing.csail.mit.edu/](https://missing.csail.mit.edu/)
 - [Great Practical Ideas in CS](https://www.cs.cmu.edu/~15131/f17/)
+
+## Have Fun with Game
+
+If you want to play the game, you can run the following command in the terminal:
+```sh
+./interactive-snake
+```
+
+To change the speed, you can set the speed manually by following command:
+```sh
+./interactive-snake -d 0.25
+```
+
+Number indicates the time in seconds between each frame. The default speed is 1 second.
