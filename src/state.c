@@ -504,10 +504,6 @@ game_state_t *load_board(FILE *fp)
   }
 
   game_state_t *D = (game_state_t *)calloc(1, sizeof(game_state_t));
-  if (D == NULL)
-  {
-    return NULL;
-  }
 
   char ch;
   unsigned int i = 0;
